@@ -3,9 +3,9 @@
 This folder is a static MarkTL HTML export bundle.
 
 - Source note: 800. PV Portfolio/03. PV Blog.md
-- Artifact goal: publish
-- Artifact type: research-report
-- Template: editorial
+- Artifact goal: review
+- Artifact type: interactive-explainer
+- Template: interactive-report
 - Preview security: trusted
 
 Publish this folder with GitHub Pages, S3/R2, Netlify, Vercel, or any static host.
