@@ -1,52 +1,141 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-
-
-<title>05. VirtOn</title>
-<style>
-      body { margin: 0; font-family: Georgia, "Times New Roman", serif; color: #202124; background: #faf7f2; }
-      main { max-width: 900px; margin: 0 auto; padding: 56px 36px 80px; box-sizing: border-box; }
-      article { background: #fffdf8; border: 1px solid #e6ddcf; padding: 44px; }
-      h1 { font-size: 44px; line-height: 1.05; margin-top: 0; }
-      h2 { margin-top: 42px; border-top: 1px solid #dfd5c8; padding-top: 24px; }
-      p, li { font-size: 18px; line-height: 1.75; }
-      a { color: #8b3a2b; }
-      pre { overflow: auto; padding: 18px; background: #25211d; color: #f7efe4; border-radius: 6px; }
-      table { width: 100%; border-collapse: collapse; margin: 22px 0; background: #fff; }
-      th, td { border-bottom: 1px solid #e6ddcf; padding: 10px 12px; }
-      img { max-width: 100%; height: auto; display: block; margin: 24px auto; }
-      .frontmatter { white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: #f1eadf; padding: 14px; color: #5f574f; }
-      .callout { border: 1px solid #d8b98c; background: #fff6e5; padding: 16px 18px; margin: 24px 0; }
-      .callout-title { font-family: ui-sans-serif, system-ui, sans-serif; font-weight: 800; text-transform: uppercase; font-size: 12px; letter-spacing: .08em; }
-    </style>
-<meta property="og:type" content="article">
-<meta property="og:title" content="05-virton">
-<meta property="og:description" content="안녕하세요. 신뢰할 수 있는 IT 서비스 플랫폼 프라임비전입니다. 가상화를 도입하려고 하면 많은 분들이 먼저 클러스터, HA, HCI 같은 복잡한 구성을 떠올립니다. 하지만 모든 환경이 그렇게까지 무거운 구조를 필요로 하지는 않습니다. 보안·백업·네트워크 장비·ERP·그룹웨어처럼 단일 서버에서도 충분히 안정적으로 운영 가">
-<meta property="og:url" content="https://JuSikLee.github.io/JS_WebBlogEdit/marktl/s/1quo6r7/">
-<meta property="og:image" content="https://JuSikLee.github.io/JS_WebBlogEdit/marktl/s/1quo6r7/assets/pasted-image-20260514172640.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="05-virton">
-<meta name="twitter:description" content="안녕하세요. 신뢰할 수 있는 IT 서비스 플랫폼 프라임비전입니다. 가상화를 도입하려고 하면 많은 분들이 먼저 클러스터, HA, HCI 같은 복잡한 구성을 떠올립니다. 하지만 모든 환경이 그렇게까지 무거운 구조를 필요로 하지는 않습니다. 보안·백업·네트워크 장비·ERP·그룹웨어처럼 단일 서버에서도 충분히 안정적으로 운영 가">
-<meta name="twitter:image" content="https://JuSikLee.github.io/JS_WebBlogEdit/marktl/s/1quo6r7/assets/pasted-image-20260514172640.png">
-<link rel="canonical" href="https://JuSikLee.github.io/JS_WebBlogEdit/marktl/s/1quo6r7/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>버트온 Basic - 단독 서버 가상화</title>
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="버트온 Basic - 단독 서버 가상화">
+  <meta property="og:description" content="단독서버 가상화, 버트온에서만 가능합니다! 버트온 Basic은 복잡한 인프라 없이 단일 서버에서 VM을 안정적으로 운영할 수 있는 단독 가상화 라이선스입니다.">
+  <meta property="og:image" content="images/VirtOn_Promotion_001.png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #f0f0f0;
+      font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', sans-serif;
+      font-size: 14px;
+      color: #333;
+    }
+    .email-wrapper {
+      max-width: 630px;
+      margin: 0 auto;
+      background-color: #ffffff;
+    }
+    .email-wrapper img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    a.img-link {
+      display: block;
+      cursor: pointer;
+    }
+    a.img-link img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .text-section {
+      padding: 32px 48px;
+      text-align: center;
+      line-height: 1.9;
+      color: #444;
+    }
+    .text-section .greeting {
+      font-weight: bold;
+      font-size: 15px;
+      margin-bottom: 20px;
+      color: #222;
+    }
+    .text-section .body-text {
+      font-size: 14px;
+      word-break: keep-all;
+    }
+    .text-section .highlight {
+      font-weight: bold;
+      color: #222;
+    }
+    .mid-text-section {
+      padding: 28px 48px 32px;
+      text-align: center;
+      line-height: 2;
+      color: #444;
+      font-size: 14px;
+    }
+    .mid-text-section .bold-line {
+      font-weight: bold;
+      color: #222;
+    }
+    .footer-section {
+      padding: 24px 40px 32px;
+      text-align: center;
+      color: #888;
+      font-size: 12px;
+      line-height: 2;
+      border-top: 1px solid #eeeeee;
+    }
+  </style>
 </head>
 <body>
-<main data-template="editorial">
-<article>
-<p><img src="assets/pasted-image-20260514172640.png" alt="Pasted image 20260514172640.png"></p>
-<p><strong>안녕하세요. 신뢰할 수 있는 IT 서비스 플랫폼 프라임비전입니다.</strong></p>
-<p>가상화를 도입하려고 하면 많은 분들이 먼저 클러스터, HA, HCI 같은 복잡한 구성을 떠올립니다. 하지만 모든 환경이 그렇게까지 무거운 구조를 필요로 하지는 않습니다. 보안·백업·네트워크 장비·ERP·그룹웨어처럼 단일 서버에서도 충분히 안정적으로 운영 가능한 시스템이라면 오히려 단독 서버 기반 가상화가 더 합리적인 선택이 될 수 있습니다.</p>
-<p><img src="assets/pasted-image-20260514172753.png" alt="Pasted image 20260514172753.png"></p>
-<p><img src="assets/pasted-image-20260514172821.png" alt="Pasted image 20260514172821.png"></p>
-<p><img src="assets/pasted-image-20260514172959.png" alt="Pasted image 20260514172959.png">(<a>https://www.pvcorp.co.kr/contact.jsp</a>)</p>
-<p><img src="assets/pasted-image-20260514172830.png" alt="Pasted image 20260514172830.png"></p>
-<p><img src="assets/pasted-image-20260514181840.png" alt="Pasted image 20260514181840.png"></p>
-<p>가상화는 반드시 큰 규모로 시작해야 하는 기술이 아닙니다.&lt;br&gt;&lt;br&gt;중요한 것은 현재 환경에 맞는 방식으로 시작하는 것입니다.&lt;br&gt;&lt;br&gt;버트온 Basic은 단독 서버 환경에서도 충분한 가상화 운영이 가능하도록 설계된&lt;br&gt;&lt;br&gt;현실적인 선택지 입니다.|</p>
-<p><img src="assets/pasted-image-20260514181948.png" alt="Pasted image 20260514181948.png"></p>
-<p>프라임비전 주식회사 jslee233@pvcorp.co.kr 경기도 용인시 기흥구 중부대로 184, 힉스유타워 A동 1514호 010-2336-4767</p>
-</article>
-</main>
+  <div class="email-wrapper">
 
+    <!-- 001: 헤더 배너 -->
+    <a class="img-link" href="https://docs.google.com/forms/d/1ZDeEHEvA0oNsmHv5t9r9GIS5f6O5-PHJPSZNpwzKkCM/edit" target="_blank">
+      <img src="images/VirtOn_Promotion_001.png" alt="버트온 Basic - 단독 서버 가상화, 버트온에서만 가능합니다">
+    </a>
+
+    <!-- 본문 텍스트 -->
+    <div class="text-section">
+      <p class="greeting">안녕하세요. 신뢰할 수 있는 IT 서비스 플랫폼 프라임비전입니다.</p>
+      <p class="body-text">
+        가상화를 도입하려고 하면 많은 분들이 먼저 클러스터, HA, HCI 같은 복잡한 구성을<br>
+        떠올립니다. 하지만 모든 환경이 그렇게까지 무거운 구조를 필요로 하지는 않습니다.<br>
+        보안·백업·네트워크 장비·ERP·그룹웨어처럼 단일 서버에서도 충분히 안정적으로<br>
+        운영 가능한 시스템이라면 오히려
+        <span class="highlight">단독 서버 기반 가상화가 더 합리적인 선택</span>이 될 수 있습니다.
+      </p>
+    </div>
+
+    <!-- 002: 이런 고민 있으신가요? -->
+    <img src="images/VirtOn_Promotion_002.png" alt="이런 고민 있으신가요?">
+
+    <!-- 003: 버트온 Basic이 가장 현실적인 해결책 -->
+    <img src="images/VirtOn_Promotion_003.png" alt="버트온 Basic이 가장 현실적인 해결책입니다">
+
+    <!-- 004: 상담 문의 버튼 -->
+    <a class="img-link" href="https://docs.google.com/forms/d/1ZDeEHEvA0oNsmHv5t9r9GIS5f6O5-PHJPSZNpwzKkCM/edit" target="_blank">
+      <img src="images/VirtOn_Promotion_004_상담문의.png" alt="버트온 Basic 상담 문의">
+    </a>
+
+    <!-- 005: 핵심 가치 -->
+    <img src="images/VirtOn_Promotion_005.png" alt="버트온 Basic 핵심 가치">
+
+    <!-- 006: 이런 환경에 추천합니다 -->
+    <img src="images/VirtOn_Promotion_006.png" alt="이런 환경에 추천합니다">
+
+    <!-- 중간 텍스트 -->
+    <div class="mid-text-section">
+      <p>가상화는 반드시 큰 규모로 시작해야 하는 기술이 아닙니다.</p>
+      <p>중요한 것은 현재 환경에 맞는 방식으로 시작하는 것입니다.</p>
+      <p class="bold-line">버트온 Basic은 단독 서버 환경에서도 충분한 가상화 운영이 가능하도록 설계된<br>현실적인 선택지 입니다.</p>
+    </div>
+
+    <!-- 007: 프로모션 배너 -->
+    <a class="img-link" href="https://docs.google.com/forms/d/1ZDeEHEvA0oNsmHv5t9r9GIS5f6O5-PHJPSZNpwzKkCM/edit" target="_blank">
+      <img src="images/VirtOn_Promotion_007.png" alt="더플 파트너 대상 단독 프로모션">
+    </a>
+
+    <!-- 푸터 -->
+    <div class="footer-section">
+      <p>프라임비전 주식회사</p>
+      <p>jslee233@pvcorp.co.kr</p>
+      <p>경기도 용인시 기흥구 중부대로 184, 힉스유타워 A동 1514호&nbsp;&nbsp;T. 010-2336-4767</p>
+    </div>
+
+  </div>
 </body>
 </html>
