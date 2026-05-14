@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "updatedAt": "2026-05-14T03:18:17.966Z",
+  "items": [
+    {
+      "slug": "01-기획-및-아키텍처-설계",
+      "shortId": "15kzxc7",
+      "url": "https://JuSikLee.github.io/JS_WebBlogEdit/marktl/s/15kzxc7/",
+      "canonicalUrl": "https://JuSikLee.github.io/JS_WebBlogEdit/marktl/01-%EA%B8%B0%ED%9A%8D-%EB%B0%8F-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EC%84%A4%EA%B3%84/",
+      "sourcePath": "400. SaaS_todo app/01. 기획 및 아키텍처 설계.md",
+      "artifactType": "research-report",
+      "title": "◎ SaaS 인포그래픽",
+      "excerpt": "YAML tile: \"20260513 todo APP\" date: \"20260513 09:21\" tags: [개발] ◎ 기획 및 아키텍처 설계 반갑습니다! Ubuntu와 VSCode, 그리고 Claude Code라는 강력한 조합을 선택하셨군요. 이 삼각 편대는 현재 SaaS MVP(Minimum Viable Product",
+      "tags": [],
+      "updatedAt": "2026-05-14T03:18:17.966Z"
+    }
+  ]
+}
