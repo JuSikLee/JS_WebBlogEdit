@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT 인프라 비용은 줄이고, 안정성은 높이고 — 프라임비전</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #1a56db;
+      --primary-dark: #1341a8;
+      --accent: #0ea5e9;
+      --success: #16a34a;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --info: #0284c7;
+      --tip: #7c3aed;
+      --example: #0f766e;
+      --abstract: #0369a1;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --nav-bg: #ffffff;
+      --nav-width: 260px;
+      --header-h: 64px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--header-h);
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    }
+    header .logo {
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.25rem;
+      letter-spacing: -.5px;
+    }
+    header .logo span { color: #93c5fd; }
+    header .tagline {
+      margin-left: auto;
+      color: #bfdbfe;
+      font-size: .85rem;
+    }
+
+    /* ── LAYOUT ── */
+    .page-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 2rem;
+      padding: 2.5rem 1.5rem;
+      align-items: flex-start;
+    }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      flex: 1;
+      min-width: 0;
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 2.5rem 3rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+
+    /* ── RIGHT NAV ── */
+    .sidebar {
+      width: var(--nav-width);
+      flex-shrink: 0;
+      position: sticky;
+      top: calc(var(--header-h) + 1.5rem);
+      max-height: calc(100vh - var(--header-h) - 3rem);
+      overflow-y: auto;
+    }
+    .sidebar-inner {
+      background: var(--nav-bg);
+      border-radius: 12px;
+      padding: 1.25rem 1.25rem 1.5rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      border: 1px solid var(--border);
+    }
+    .sidebar-title {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding-bottom: .6rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: .75rem;
+    }
+    .sidebar nav ul { list-style: none; }
+    .sidebar nav ul li { margin: 0; }
+    .sidebar nav ul li a {
+      display: block;
+      padding: .4rem .6rem;
+      font-size: .82rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background .15s, color .15s;
+      line-height: 1.4;
+    }
+    .sidebar nav ul li a:hover,
+    .sidebar nav ul li a.active {
+      background: #eff6ff;
+      color: var(--primary);
+      font-weight: 500;
+    }
+    .sidebar nav ul li.sub a {
+      padding-left: 1.25rem;
+      font-size: .78rem;
+    }
+    .sidebar-cta {
+      margin-top: 1.25rem;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: .82rem;
+      line-height: 1.6;
+    }
+    .sidebar-cta strong { display: block; font-size: .9rem; margin-bottom: .3rem; }
+    .sidebar-cta a { color: #bfdbfe; }
+
+    /* ── TYPOGRAPHY ── */
+    h1 {
+      font-size: 2rem;
+      font-weight: 900;
+      line-height: 1.3;
+      color: var(--text);
+      letter-spacing: -.5px;
+      margin-bottom: .5rem;
+    }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin: 2.5rem 0 1rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid var(--border);
+      scroll-margin-top: calc(var(--header-h) + 1.5rem);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 2rem 0 .75rem;
+      scroll-margin-top: calc(var(--header-h) + 1.5rem);
+    }
+    p { margin-bottom: 1rem; }
+    strong { color: var(--primary-dark); font-weight: 700; }
+    em { font-style: italic; color: var(--text-muted); }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+    /* hero subtitle */
+    .hero-sub {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    /* opening quote block */
+    .opening-quote {
+      background: #f1f5f9;
+      border-left: 4px solid var(--primary);
+      border-radius: 0 8px 8px 0;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      font-size: 1rem;
+      color: #334155;
+    }
+    .opening-quote p { margin-bottom: .35rem; font-weight: 500; }
+    .opening-quote p:last-child { margin-bottom: 0; }
+
+    /* ── CALLOUTS ── */
+    .callout {
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+      border-left: 4px solid;
+    }
+    .callout-title {
+      font-weight: 700;
+      font-size: .88rem;
+      letter-spacing: .03em;
+      margin-bottom: .5rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .callout-body { font-size: .93rem; line-height: 1.7; }
+    .callout-body ul { padding-left: 1.25rem; }
+    .callout-body li { margin-bottom: .25rem; }
+    .callout-body p { margin-bottom: .4rem; }
+    .callout-body p:last-child { margin-bottom: 0; }
+
+    .callout.info    { background:#e0f2fe; border-color:var(--info);    color:#0c4a6e; }
+    .callout.info    .callout-title { color:var(--info); }
+    .callout.success { background:#dcfce7; border-color:var(--success); color:#14532d; }
+    .callout.success .callout-title { color:var(--success); }
+    .callout.tip     { background:#f3e8ff; border-color:var(--tip);     color:#3b0764; }
+    .callout.tip     .callout-title { color:var(--tip); }
+    .callout.warning { background:#fef3c7; border-color:var(--warning); color:#78350f; }
+    .callout.warning .callout-title { color:var(--warning); }
+    .callout.example { background:#ccfbf1; border-color:var(--example); color:#134e4a; }
+    .callout.example .callout-title { color:var(--example); }
+    .callout.abstract{ background:#e0f2fe; border-color:var(--abstract);color:#0c4a6e; }
+    .callout.abstract .callout-title { color:var(--abstract); }
+
+    /* ── TABLE ── */
+    .table-wrap { overflow-x: auto; margin: 1.25rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: .93rem; }
+    thead tr { background: var(--primary); color: #fff; }
+    thead th { padding: .7rem 1rem; text-align: left; font-weight: 600; }
+    tbody tr:nth-child(even) { background: #f8fafc; }
+    tbody td { padding: .65rem 1rem; border-bottom: 1px solid var(--border); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-muted);
+      font-size: .85rem;
+      border-top: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .page-wrap { flex-direction: column-reverse; padding: 1.5rem 1rem; }
+      .sidebar { width: 100%; position: static; max-height: none; }
+      main { padding: 1.75rem 1.5rem; }
+      h1 { font-size: 1.6rem; }
+    }
+
+    /* scrollbar */
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">Prime<span>Vision</span></div>
+  <div class="tagline">End-to-End IT 인프라 파트너</div>
+</header>
+
+<div class="page-wrap">
+
+  <!-- MAIN CONTENT -->
+  <main>
+
+    <h1>IT 인프라 비용은 줄이고,<br>안정성은 높이고</h1>
+    <p class="hero-sub">프라임비전(PrimeVision)이 그 답입니다</p>
+
+    <div class="opening-quote">
+      <p>💬 "서버가 또 다운됐습니다."</p>
+      <p>💬 "이번 달도 유지보수 비용이 예산을 초과했습니다."</p>
+      <p>💬 "AI 도입을 검토 중인데, 인프라부터 다시 구축해야 할 것 같습니다."</p>
+    </div>
+
+    <p>이런 고민, 혼자 하고 계시지 않으신가요?</p>
+    <p>오늘날 기업의 IT 인프라는 단순한 '전산실' 개념을 넘어, <strong>비즈니스 경쟁력 그 자체</strong>가 되었습니다. 하지만 현실에서는 높은 구축 비용, 잦은 장애, 복잡한 관리 문제로 IT 담당자들이 매일 밤낮을 씨름하고 있습니다.</p>
+    <p><strong>프라임비전(PrimeVision)</strong>은 바로 이 문제를 해결하기 위해 탄생했습니다.</p>
+
+    <hr />
+
+    <!-- 회사 소개 -->
+    <h2 id="about">프라임비전은 어떤 회사인가요?</h2>
+    <div class="callout info">
+      <div class="callout-title">ℹ️ 회사 소개</div>
+      <div class="callout-body">
+        <p>2026년 4월 설립된 <strong>프라임비전</strong>은 AI·IT 인프라 및 네트워크 분야 전문가들로 구성된 기술 집약형 기업입니다.<br>기술지원본부 · 전략기획본부 · 기업부설연구소를 갖추고, <strong>LG U+, KT HCN, LG HelloVision, 전남대학교</strong> 등 국내 주요 기업 및 기관에 검증된 솔루션을 공급하고 있습니다.</p>
+      </div>
+    </div>
+    <p>저희는 단순히 장비를 납품하는 벤더가 아닙니다. <strong>네트워크 설계부터 AI 인프라 구축, 자체 개발 관제 솔루션까지</strong> — 고객의 IT 환경을 처음부터 끝까지 책임지는 <strong>End-to-End 파트너</strong>입니다.</p>
+
+    <hr />
+
+    <!-- 4가지 변화 -->
+    <h2 id="solutions">고객이 실제로 경험하는 4가지 변화</h2>
+
+    <h3 id="network">🌐 1. 끊기지 않는 네트워크 — Aurora &amp; Ruckus</h3>
+    <p>인터넷이 느려지거나 끊기는 순간, 비즈니스는 멈춥니다.</p>
+    <p><strong>Aurora E6000</strong>은 국내 주요 통신사들이 선택한 초고집적 케이블 네트워크 장비입니다. 샤시 하나에 1,000개 이상의 다운스트림 채널을 수용하면서도, 모든 모듈이 이중화되어 <strong>장애가 발생해도 서비스는 계속</strong> 됩니다.</p>
+    <p><strong>Ruckus Wi-Fi 7</strong>은 기존 Wi-Fi 6보다 <strong>최대 4배 빠른</strong> 무선 환경을 제공합니다. 수백 명이 동시에 접속하는 대형 오피스, 스마트 캠퍼스, 공공시설에서도 끊김 없는 연결을 보장합니다.</p>
+    <div class="callout success">
+      <div class="callout-title">✅ 고객 혜택</div>
+      <div class="callout-body">
+        <ul>
+          <li><strong>99.999% 가용성</strong> 보장 — 연간 다운타임 5분 이하</li>
+          <li>대규모 사용자 환경에서도 안정적인 무선 품질 유지</li>
+          <li>8K 영상회의, XR 협업 등 차세대 업무 환경 완벽 지원</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr />
+
+    <h3 id="ai-server">🖥️ 2. AI 시대를 준비하는 서버 — Kaytus</h3>
+    <p>AI 도입을 고민하고 계신가요? <strong>인프라가 받쳐주지 않으면 AI는 그냥 꿈입니다.</strong></p>
+    <p><strong>Kaytus 서버</strong>는 GPU 풀링과 LLM 파인튜닝을 위한 <strong>MotusAI 플랫폼</strong>을 탑재한 AI 전용 고성능 서버입니다. 금융, 제조, 의료 등 어떤 산업이든 귀사의 AI 서비스에 맞춤 설계됩니다.</p>
+    <p>글로벌 생산 공장(베트남 연간 12만 대 규모)을 통해 <strong>대규모 도입 프로젝트도 납기를 100% 준수</strong>합니다.</p>
+    <div class="callout tip">
+      <div class="callout-title">💡 이런 고객에게 딱 맞습니다</div>
+      <div class="callout-body">
+        <ul>
+          <li>ChatGPT 같은 자체 AI 모델 운영을 고려 중인 기업</li>
+          <li>GPU 자원을 여러 부서가 효율적으로 나눠 쓰고 싶은 기업</li>
+          <li>AI 인프라를 빠르게, 안정적으로 구축해야 하는 기업</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr />
+
+    <h3 id="virton">💾 3. VMware 대안을 찾고 계신가요? — Virton (Proxmox 기반)</h3>
+    <p>최근 글로벌 가상화 솔루션의 <strong>라이선스 비용이 급등</strong>하면서 많은 기업이 대안을 찾고 있습니다.</p>
+    <p><strong>Virton</strong>은 오픈소스 기반 Proxmox 위에 프라임비전이 국내 환경에 최적화한 <strong>엔터프라이즈급 가상화 솔루션</strong>입니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>기능</th><th>Virton</th></tr></thead>
+        <tbody>
+          <tr><td>가상머신(VM) + 컨테이너 통합 관리</td><td>✅</td></tr>
+          <tr><td>실시간 마이그레이션 &amp; 고가용성(HA)</td><td>✅</td></tr>
+          <tr><td>웹 UI 기반 직관적 운영</td><td>✅</td></tr>
+          <tr><td>구독형 / 구매형 선택 가능</td><td>✅</td></tr>
+          <tr><td>국내 기술지원</td><td>✅</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">⚠️ 이런 상황이라면 지금 바로 검토하세요</div>
+      <div class="callout-body">
+        <p>VMware 라이선스 갱신 비용 통보를 받으셨다면, Virton으로 전환 시 <strong>TCO(총 소유 비용) 최대 60% 절감</strong>이 가능합니다.</p>
+      </div>
+    </div>
+
+    <hr />
+
+    <h3 id="mgmt">🛠️ 4. 관리가 쉬워야 진짜 솔루션 — SmartConsole &amp; SDMS</h3>
+    <p>좋은 장비도 관리가 어려우면 소용없습니다. 프라임비전은 <strong>직접 개발한 관리 솔루션</strong>으로 운영 부담을 확 줄여드립니다.</p>
+    <p><strong>SmartConsole</strong> — 복잡한 CLI 명령어 없이, <strong>모바일로도 장비를 관리</strong>합니다.</p>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+      <li>다중 벤더 장비를 하나의 GUI로 통합 제어</li>
+      <li>OS 업데이트, 초기화, 설정 적용 자동화</li>
+      <li>현장 출동 없이 원격으로 장애 즉시 대응</li>
+    </ul>
+    <p><strong>SDMS (Smart Device Management System)</strong> — <strong>인프라 전체를 한눈에</strong> 봅니다.</p>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+      <li>실시간 장애 알람 및 자동 복구 절차(SOP) 제공</li>
+      <li>에너지 사용량 및 자산 라이프사이클 통합 관리</li>
+      <li>2D/3D 시각화로 복잡한 IDC 환경을 직관적으로 파악</li>
+    </ul>
+    <div class="callout example">
+      <div class="callout-title">📊 실제 절감 효과</div>
+      <div class="callout-body">
+        <p>SmartConsole + SDMS 도입 후 <strong>장애 대응 시간 70% 단축</strong>, <strong>현장 출동 비용 50% 절감</strong> 사례가 보고되고 있습니다.</p>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- 3가지 이유 -->
+    <h2 id="why">프라임비전을 선택해야 하는 3가지 이유</h2>
+    <div class="callout abstract">
+      <div class="callout-title">📋 핵심 요약</div>
+      <div class="callout-body">
+        <p><strong>① 비용 절감</strong><br>Proxmox 기반 합리적 가상화 라이선스 + 고집적 장비 설계 + 운영 자동화로<br><strong>CAPEX(초기 투자) &amp; OPEX(운영 비용) 동시 절감</strong></p>
+        <br>
+        <p><strong>② 99.999% 안정성</strong><br>하드웨어 이중화 + 무중단 Fail-over + HA 클러스터링으로<br><strong>서비스 중단 없는 인프라</strong> 완성</p>
+        <br>
+        <p><strong>③ AI 미래 대비</strong><br>Wi-Fi 7 초광대역 + Kaytus GPU 풀링으로<br><strong>지금 당장, 그리고 5년 후에도 충분한 인프라</strong> 확보</p>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- CTA -->
+    <h2 id="contact">지금 바로 상담받아보세요</h2>
+    <p>IT 인프라 고민은 오래 끌수록 비용이 커집니다. 프라임비전의 전문가가 귀사의 현황을 무료로 진단해 드립니다.</p>
+    <div class="callout tip">
+      <div class="callout-title">📬 무료 인프라 진단 신청</div>
+      <div class="callout-body">
+        <p>📧 <strong>이메일 문의</strong>: contact@primevision.co.kr</p>
+        <p>📞 <strong>전화 상담</strong>: 02-XXXX-XXXX</p>
+        <p>🌐 <strong>웹사이트</strong>: www.primevision.co.kr</p>
+        <p><em>현재 환경을 간단히 설명해 주시면, 맞춤형 제안서를 제공해 드립니다.</em></p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- RIGHT SIDEBAR NAV -->
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-title">목차</div>
+      <nav>
+        <ul>
+          <li><a href="#about">🏢 회사 소개</a></li>
+          <li><a href="#solutions">💡 4가지 변화</a></li>
+          <li class="sub"><a href="#network">🌐 네트워크</a></li>
+          <li class="sub"><a href="#ai-server">🖥️ AI 서버</a></li>
+          <li class="sub"><a href="#virton">💾 가상화 Virton</a></li>
+          <li class="sub"><a href="#mgmt">🛠️ 관리 솔루션</a></li>
+          <li><a href="#why">✅ 선택 이유 3가지</a></li>
+          <li><a href="#contact">📬 무료 상담</a></li>
+        </ul>
+      </nav>
+      <div class="sidebar-cta">
+        <strong>무료 인프라 진단</strong>
+        지금 바로 신청하세요.<br>
+        <a href="mailto:contact@primevision.co.kr">contact@primevision.co.kr</a>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<footer>
+  <p>© 2026 프라임비전 주식회사 — 귀사의 IT 인프라를 혁신하는 가장 믿음직한 파트너</p>
+</footer>
+
+<script>
+  // Active nav highlight on scroll
+  const sections = document.querySelectorAll('h2[id], h3[id]');
+  const navLinks = document.querySelectorAll('.sidebar nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.sidebar nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-60px 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
