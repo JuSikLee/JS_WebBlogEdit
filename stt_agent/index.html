@@ -201,7 +201,7 @@
 
     <div class="api-row">
       <label for="apiUrl">서버 주소</label>
-      <input id="apiUrl" type="text" value="http://localhost:8000" />
+      <input id="apiUrl" type="text" />
     </div>
 
     <div class="dropzone" id="dropzone">
@@ -229,6 +229,8 @@
   </div>
 
   <script>
+    document.getElementById('apiUrl').value = window.location.origin;
+
     const dropzone   = document.getElementById('dropzone');
     const fileInput  = document.getElementById('fileInput');
     const fileName   = document.getElementById('fileName');
