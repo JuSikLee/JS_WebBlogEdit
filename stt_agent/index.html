@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STT Agent — 음성 업로드</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f6fa;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.08);
+      padding: 40px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: .85rem;
+      color: #888;
+      margin-bottom: 28px;
+    }
+
+    /* API URL setting */
+    .api-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .api-row label {
+      font-size: .78rem;
+      color: #555;
+      white-space: nowrap;
+    }
+
+    .api-row input {
+      flex: 1;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: .82rem;
+      color: #333;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .api-row input:focus { border-color: #4f6ef7; }
+
+    /* Drop zone */
+    .dropzone {
+      border: 2px dashed #c8d0e7;
+      border-radius: 12px;
+      padding: 40px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: background .2s, border-color .2s;
+      position: relative;
+    }
+
+    .dropzone:hover, .dropzone.drag-over {
+      background: #f0f3ff;
+      border-color: #4f6ef7;
+    }
+
+    .dropzone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .dropzone .icon {
+      font-size: 2.4rem;
+      margin-bottom: 10px;
+    }
+
+    .dropzone .hint {
+      font-size: .85rem;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .dropzone .hint strong {
+      display: block;
+      color: #333;
+      font-size: .95rem;
+      margin-bottom: 4px;
+    }
+
+    .file-name {
+      margin-top: 12px;
+      font-size: .82rem;
+      color: #4f6ef7;
+      font-weight: 600;
+      min-height: 20px;
+    }
+
+    /* Upload button */
+    .btn-upload {
+      margin-top: 20px;
+      width: 100%;
+      padding: 13px;
+      background: #4f6ef7;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, opacity .2s;
+    }
+
+    .btn-upload:hover:not(:disabled) { background: #3a57e8; }
+    .btn-upload:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* Progress bar */
+    .progress-wrap {
+      margin-top: 16px;
+      display: none;
+    }
+
+    .progress-bar-bg {
+      background: #e8ecff;
+      border-radius: 99px;
+      height: 8px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: #4f6ef7;
+      border-radius: 99px;
+      transition: width .3s ease;
+    }
+
+    .progress-label {
+      text-align: right;
+      font-size: .78rem;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    /* Result */
+    .result {
+      margin-top: 20px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: .88rem;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .result.success {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .result.error {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    /* Supported formats */
+    .formats {
+      margin-top: 20px;
+      font-size: .75rem;
+      color: #aaa;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>STT Agent</h1>
+    <p class="subtitle">음성 파일을 업로드하면 자동으로 전사합니다.</p>
+
+    <div class="api-row">
+      <label for="apiUrl">서버 주소</label>
+      <input id="apiUrl" type="text" value="http://localhost:8000" />
+    </div>
+
+    <div class="dropzone" id="dropzone">
+      <input type="file" id="fileInput" accept=".mp3,.m4a,.wav,.flac,.ogg,.webm,.mp4" />
+      <div class="icon">🎙️</div>
+      <div class="hint">
+        <strong>파일을 끌어다 놓거나 클릭하여 선택</strong>
+        mp3, m4a, wav, flac, ogg, webm, mp4
+      </div>
+    </div>
+    <div class="file-name" id="fileName"></div>
+
+    <button class="btn-upload" id="btnUpload" disabled>업로드</button>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-label" id="progressLabel">0%</div>
+    </div>
+
+    <div class="result" id="result"></div>
+
+    <p class="formats">지원 형식: mp3 · m4a · wav · flac · ogg · webm · mp4</p>
+  </div>
+
+  <script>
+    const dropzone   = document.getElementById('dropzone');
+    const fileInput  = document.getElementById('fileInput');
+    const fileName   = document.getElementById('fileName');
+    const btnUpload  = document.getElementById('btnUpload');
+    const progressWrap = document.getElementById('progressWrap');
+    const progressFill = document.getElementById('progressFill');
+    const progressLabel = document.getElementById('progressLabel');
+    const resultBox  = document.getElementById('result');
+    const apiUrl     = document.getElementById('apiUrl');
+
+    let selectedFile = null;
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files[0]) selectFile(fileInput.files[0]);
+    });
+
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('drag-over');
+    });
+
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('drag-over');
+      const f = e.dataTransfer.files[0];
+      if (f) selectFile(f);
+    });
+
+    function selectFile(f) {
+      selectedFile = f;
+      fileName.textContent = f.name + ' (' + formatSize(f.size) + ')';
+      btnUpload.disabled = false;
+      hideResult();
+    }
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+    }
+
+    btnUpload.addEventListener('click', uploadFile);
+
+    function uploadFile() {
+      if (!selectedFile) return;
+
+      const base = apiUrl.value.replace(/\/$/, '');
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      btnUpload.disabled = true;
+      progressWrap.style.display = 'block';
+      setProgress(0);
+      hideResult();
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', base + '/upload');
+
+      xhr.upload.addEventListener('progress', (e) => {
+        if (e.lengthComputable) {
+          const pct = Math.round((e.loaded / e.total) * 100);
+          setProgress(pct);
+        }
+      });
+
+      xhr.addEventListener('load', () => {
+        btnUpload.disabled = false;
+        if (xhr.status >= 200 && xhr.status < 300) {
+          const data = JSON.parse(xhr.responseText);
+          showResult('success', `✅ 업로드 완료: ${data.filename}`);
+          setProgress(100);
+        } else {
+          let msg = '업로드 실패';
+          try { msg = JSON.parse(xhr.responseText).detail || msg; } catch (_) {}
+          showResult('error', `❌ ${msg} (${xhr.status})`);
+        }
+      });
+
+      xhr.addEventListener('error', () => {
+        btnUpload.disabled = false;
+        showResult('error', '❌ 서버에 연결할 수 없습니다. 서버 주소와 FastAPI 실행 상태를 확인하세요.');
+      });
+
+      xhr.send(formData);
+    }
+
+    function setProgress(pct) {
+      progressFill.style.width = pct + '%';
+      progressLabel.textContent = pct + '%';
+    }
+
+    function showResult(type, msg) {
+      resultBox.className = 'result ' + type;
+      resultBox.textContent = msg;
+      resultBox.style.display = 'block';
+    }
+
+    function hideResult() {
+      resultBox.style.display = 'none';
+      progressWrap.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
